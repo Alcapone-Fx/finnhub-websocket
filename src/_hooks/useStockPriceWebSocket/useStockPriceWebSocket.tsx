@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 
-const WEB_SOCKET_URL = `wss://ws.finnhub.io?token=${import.meta.env.VITE_API_KEY}`;
+const WEB_SOCKET_URL = `wss://ws.finnhub.io?token=${
+  import.meta.env.VITE_API_KEY
+}`;
 
-export const useStockWebSocket = () => {
+export const useStockPriceWebSocket = () => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
@@ -13,13 +15,22 @@ export const useStockWebSocket = () => {
         console.info('WebSocket connected');
       });
 
+      newSocket.addEventListener('error', (error) => {
+        console.error('WebSocket error:', error);
+      });
+
+      newSocket.addEventListener('close', () => {
+        console.log('WebSocket closed');
+      });
+
       setSocket(newSocket);
 
       return () => {
         newSocket.close();
       };
     }
-  }, [socket]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return socket;
 };
