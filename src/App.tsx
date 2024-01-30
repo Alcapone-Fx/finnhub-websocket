@@ -77,7 +77,7 @@ const App = () => {
       </Drawer>
       <Box component='main' sx={{ flexGrow: 1, mt: 8, pl: 30 }}>
         <Toolbar />
-        <StockGraph />
+        <StockGraph stocksInfo={stockCardsInfo} />
       </Box>
     </Box>
   );
