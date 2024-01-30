@@ -5,19 +5,19 @@ import { green, red } from '@mui/material/colors';
 import { Box, Typography } from '@mui/material';
 
 type StockCardProps = {
-  isPositiveStokeValue: boolean;
+  priceAboveAlert: boolean;
   stockName: string;
   value: number;
   marginChange: number;
 };
 
 export const StockCard: React.FC<StockCardProps> = ({
-  isPositiveStokeValue,
+  priceAboveAlert,
   stockName,
   value,
   marginChange,
 }) => {
-  const marginChangePercentage = (marginChange * 100).toFixed(2);
+  const marginChangePercentage = marginChange.toFixed(2);
 
   return (
     <Paper
@@ -29,7 +29,7 @@ export const StockCard: React.FC<StockCardProps> = ({
         maxHeight: 'max-content',
         width: '9rem',
         minWidth: '9rem',
-        bgcolor: isPositiveStokeValue ? green[600] : red[600],
+        bgcolor: priceAboveAlert ? green[600] : red[600],
       }}
     >
       <Box>
@@ -37,7 +37,7 @@ export const StockCard: React.FC<StockCardProps> = ({
       </Box>
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
         <Box>
-          <Typography>{value}</Typography>
+          <Typography>${value.toFixed(2)}</Typography>
         </Box>
         <Box>
           <Typography>{marginChangePercentage}%</Typography>
