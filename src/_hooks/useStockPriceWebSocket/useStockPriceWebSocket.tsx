@@ -29,8 +29,53 @@ export const useStockPriceWebSocket = () => {
         newSocket.close();
       };
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return socket;
+  const followNewStock = (symbol: string) => {
+    try {
+      if (socket) {
+        socket.send(
+          JSON.stringify({
+            type: 'subscribe',
+            symbol,
+          })
+        );
+      }
+    } catch (error) {
+      console.error('Error folowwing new stock!', error);
+    }
+  };
+
+  /**
+   * Receives a callback to pass the messages from socket
+   * Returns the unsubscribe function
+   * @param callback
+   * @returns
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getSocketMessages = (callback: (message: any) => void) => {
+    try {
+      if (socket) {
+        const messageHandler = (event: MessageEvent) => {
+          try {
+            const data = JSON.parse(event.data);
+            callback(data);
+          } catch (error) {
+            console.error('Error parsing message data!', error);
+          }
+        };
+
+        socket.addEventListener('message', messageHandler);
+
+        return () => {
+          socket.removeEventListener('message', messageHandler);
+        };
+      }
+    } catch (error) {
+      console.error('Error setting up message listener!', error);
+    }
+  };
+
+  return { socket, followNewStock, getSocketMessages };
 };
