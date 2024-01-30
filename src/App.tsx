@@ -5,14 +5,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { blueGrey } from '@mui/material/colors';
 
-import { useStockInfoHandler, FollowedStock } from './_hooks/useStockInfoHandler/useStockInfoHandler';
+import {
+  useStockInfoHandler,
+  FollowedStock,
+} from './_hooks/useStockInfoHandler/useStockInfoHandler';
 import { StockCard } from './components/StockCard/StockCard';
 import { StockAlertForm } from './components/StockAlertForm/StockAlertForm';
+import { StockAlertList } from './components/StockAlertList/StockAlertList';
 import { StockGraph } from './components/StockGraph/StockGraph';
 import { calculateMarginChange } from './utils';
 
 const App = () => {
-  const { setFollowedStocks, stockCardsInfo } = useStockInfoHandler();
+  const { setFollowedStocks, stockCardsInfo, followedStocks } =
+    useStockInfoHandler();
 
   const onAddStock = (symbol: string, priceAlert: number) => {
     const newFollowedStock: FollowedStock = {
@@ -78,6 +83,9 @@ const App = () => {
       <Box component='main' sx={{ flexGrow: 1, mt: 8, pl: 30 }}>
         <Toolbar />
         <StockGraph stocksInfo={stockCardsInfo} />
+      </Box>
+      <Box sx={{ flexGrow: 1, mt: 3, pl: 30 }}>
+        <StockAlertList stockList={followedStocks} />
       </Box>
     </Box>
   );

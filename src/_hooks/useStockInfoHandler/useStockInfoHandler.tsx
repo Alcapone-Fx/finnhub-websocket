@@ -54,5 +54,5 @@ export const useStockInfoHandler = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [followedStocks, stockCardsInfo]);
 
-  return { setFollowedStocks, stockCardsInfo }
+  return { setFollowedStocks, stockCardsInfo, followedStocks }
 }
