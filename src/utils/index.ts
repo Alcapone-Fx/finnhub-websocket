@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StockCardsInfo, FollowedStock } from '../App';
+import { StockCardsInfo, FollowedStock } from '../_hooks/useStockInfoHandler/useStockInfoHandler';
 /**
  * Returns a single value representing the percentage change.
  * If it's positive, the current value is higher or equal to the previous value
