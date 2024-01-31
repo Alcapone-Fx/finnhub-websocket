@@ -25,6 +25,12 @@ export const calculateMarginChange = (
   return (marginChange / currentValue) * 100;
 };
 
+/**
+ * Creates the structure for cardsInfo getting the new Added Stocks from form
+ * @param followedStocks 
+ * @param cardsInfo 
+ * @returns 
+ */
 const matchStocksFromFollowed = (
   followedStocks: FollowedStock[],
   cardsInfo: StockCardsInfo[]
@@ -40,6 +46,15 @@ const matchStocksFromFollowed = (
     return { ...followedStock, currentPrice: 0, previousPrice: 0 };
   });
 
+  /**
+   * Creates an array of all relevant stock values
+   * Updates the previous and current values for each cardsInfo
+   * And adds the new Added Stocks from form
+   * @param followedStocks 
+   * @param cardsInfo 
+   * @param message 
+   * @returns 
+   */
 export const buildNewFollowedStockValues = (
   followedStocks: FollowedStock[],
   cardsInfo: StockCardsInfo[],
@@ -63,6 +78,12 @@ export const buildNewFollowedStockValues = (
   });
 };
 
+/**
+ * Inmutable function to add data points in timeline
+ * @param currentGraphData 
+ * @param stocksInfo 
+ * @returns 
+ */
 export const updateGraphData = (
   currentGraphData: GraphData[],
   stocksInfo: StockCardsInfo[]

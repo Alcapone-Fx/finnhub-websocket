@@ -1,30 +1,49 @@
-# React + TypeScript + Vite
+# Finnhub Websocket
+## React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PWA for tracking stock prices
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
 
-## Expanding the ESLint configuration
+## Introduction
+This PWA shows stock data in real time using Finnhub Stock APIs
+The app has 4 components:
+- A form with 2 fields, a dropdown to select a stock to watch, an input for price alert and Add Stock button
+- Top cards (similar to Finnhub home), that shows the stock name, the value and the margin change as a percentage. Cards are red if the value is below the alert value and green if above.
+- A graph plotting the value of all stock added in dollar value and updated in realtime.
+- A list of added stocks and their corresponding alert prices
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The app manage the websocket connection in background and save the values in local storage to display all the data when openning the PWA
 
-- Configure the top-level `parserOptions` property like this:
+## Installation
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+
+```bash
+# Clone the repository
+git clone https://github.com/Alcapone-Fx/finnhub-websocket.git
+
+# Navigate to the project directory
+cd finnhub-websocket
+
+# Install dependencies
+npm install
+```
+## Usage
+The app uses the Finnhub API KEY, make sure to create your API KEY and add it in .env file, see .env-example
+
+```bash
+# Run local development
+# App is available in http://localhost:5173/
+npm run dev
+
+# Build the project, generates manifest, service worker and registers the sw
+npm run build
+
+# The vite preview command will boot up a local static web server that serves the files from dist at http://localhost:4173.
+npm run preview
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
