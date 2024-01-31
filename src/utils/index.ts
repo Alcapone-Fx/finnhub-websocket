@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StockCardsInfo, FollowedStock } from '../_hooks/useStockInfoHandler/useStockInfoHandler';
+import {
+  StockCardsInfo,
+  FollowedStock,
+} from '../_hooks/useStockInfoHandler/useStockInfoHandler';
+import { GraphData } from '../components/StockGraph/StockGraph';
 /**
  * Returns a single value representing the percentage change.
  * If it's positive, the current value is higher or equal to the previous value
@@ -57,4 +61,40 @@ export const buildNewFollowedStockValues = (
 
     return updatedStockInfo;
   });
+};
+
+export const updateGraphData = (
+  currentGraphData: GraphData[],
+  stocksInfo: StockCardsInfo[]
+) => {
+  const date = new Date();
+  const newGraphData: GraphData[] = [];
+  stocksInfo.forEach((stock) => {
+    const graphData = currentGraphData.find(
+      (data) => data.legendText === stock.symbol
+    );
+
+    if (stock.currentPrice === 0) {
+      return;
+    }
+
+    if (!graphData) {
+      newGraphData.push({
+        type: 'line',
+        showInLegend: true,
+        legendText: stock.symbol,
+        dataPoints: [{ x: date, y: stock.currentPrice }],
+      });
+    } else {
+      newGraphData.push({
+        ...graphData,
+        dataPoints: [
+          ...graphData.dataPoints,
+          { x: date, y: stock.currentPrice },
+        ],
+      });
+    }
+  });
+
+  return newGraphData;
 };
