@@ -5,9 +5,9 @@ import { blueGrey } from '@mui/material/colors';
 import CanvasJSReact from '@canvasjs/react-charts';
 
 import { StockCardsInfo } from '../../_hooks/useStockInfoHandler/useStockInfoHandler';
+import { useCachedRef } from '../../_hooks/useCachedRef/useCachedRef';
+import { LOCAL_STORAGE_KEYS } from '../../constants';
 import { updateGraphData } from '../../utils';
-
-const CanvasJS = CanvasJSReact.CanvasJS;
 
 type StockGraphProps = {
   stocksInfo: StockCardsInfo[];
@@ -25,18 +25,22 @@ interface GraphOptions {
   data: GraphData[];
 }
 
+const CanvasJS = CanvasJSReact.CanvasJS;
+const { GRAPH_OPTIONS } = LOCAL_STORAGE_KEYS;
+const title = { text: 'Stock Graph' };
+
 export const StockGraph: React.FC<StockGraphProps> = ({ stocksInfo }) => {
-  const graphOptionsRef = useRef<GraphOptions>({
-    title: { text: 'Stock Graph' },
-    data: [],
-  });
+  const { ref: graphOptionsRef, setValue: setGraphOptions } =
+    useCachedRef<GraphOptions>(GRAPH_OPTIONS, {
+      title,
+      data: [],
+    });
 
   useEffect(() => {
-    graphOptionsRef.current.data = updateGraphData(
-      graphOptionsRef.current.data,
-      stocksInfo
-    );
-    
+    const data = updateGraphData(graphOptionsRef.current.data, stocksInfo);
+
+    setGraphOptions({ title, data });
+
     const chart = new CanvasJS.Chart('chartContainer', {
       ...graphOptionsRef.current,
       data: graphOptionsRef.current.data,

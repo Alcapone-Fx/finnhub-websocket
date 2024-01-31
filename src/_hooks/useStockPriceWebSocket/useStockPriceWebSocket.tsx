@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 
+import { FollowedStock } from '../useStockInfoHandler/useStockInfoHandler';
+
 const WEB_SOCKET_URL = `wss://ws.finnhub.io?token=${
   import.meta.env.VITE_API_KEY
 }`;
 
-export const useStockPriceWebSocket = () => {
+export const useStockPriceWebSocket = (followedStocks: FollowedStock[]) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [isSubscribedFromCache, setIsSubscribedFromCache] = useState(false);
 
   useEffect(() => {
     if (!socket) {
@@ -13,6 +16,15 @@ export const useStockPriceWebSocket = () => {
 
       newSocket.addEventListener('open', () => {
         console.info('WebSocket connected');
+        followedStocks.forEach(({ symbol }) => {
+          newSocket.send(
+            JSON.stringify({
+              type: 'subscribe',
+              symbol,
+            })
+          );
+        });
+        setIsSubscribedFromCache(true);
       });
 
       newSocket.addEventListener('error', (error) => {
@@ -77,5 +89,9 @@ export const useStockPriceWebSocket = () => {
     }
   };
 
-  return { socket, followNewStock, getSocketMessages };
+  return {
+    followNewStock,
+    getSocketMessages,
+    isSubscribedFromCache,
+  };
 };
